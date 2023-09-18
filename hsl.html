@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset = "utf-8"/>
+	<link rel ="stylesheet" href="style.css" >
+	<title> HSL </title> 
+</head>
+
+<body>
+
+
+<H1> HSL COLOR PICKER</H1>
+
+<div class="wrapper" id="mainColorWrapper"> 
+	<h2> Choisissez la couleur principale :</h2>
+	<input type="color" id="mainColor" value="#002000"/>
+		<p class"descr" ="mainColorDescr"> Couleur princ. HSL Code : 
+			<span class="colorCode" id="mainColorHSL"> #000000</span>
+		</p>
+</div>
+
+<div class="wrapper" id="compColorWrapper"> 
+	<h2> Couleur complémentaire</h2>
+		<p class"descr" id="compColorDescr"> HSL Code : 
+			<input type="color" id="compColor" value="#000000" disabled/>
+			<span class"HSLcode" id="compColorHSL"> #000000</span>
+		</p>
+</div>
+
+<div class="wrapper" id="monoColorWrapper"> 
+	<h2> Schéma.de couleurs monochromatique</h2>
+		<p class"descr" id="monoAdd1ColorDescr"> Couleur additionnelle 1 - HSL Code : 
+			<input type="color" id="monoAdd1Color" value="#000000" disabled />
+			<span class"HSLcode" id="monoAdd1ColorHSL"> #000000</span>
+		</p>
+		<p class"descr" id="monoAdd2ColorDescr"> Couleur additionnelle 2 - HSL Code : 
+			<input type="color" id="monoAdd2Color" value="#000000" disabled />
+			<span class"HSLcode" id="monoAdd2ColorHSL"> #000000</span>
+		</p>
+</div>
+
+<div class="wrapper" id="neutralColorWrapper"> 
+	<h2> Schéma.de couleurs neutre</h2>
+		<label for="x"> Choisissez la valeur du variant : <span id="xValue"> 45</span></label>
+		<input type="range" min="0" max ="90" id="x" >
+		<p class"descr" id="neutral1ColorDescr"> Couleur additionnelle 1 - HSL Code : 
+			<input type="color" id="neutral1Color" value="#000000" disabled />
+			<span class"HSLcode" id="neutral1ColorHSL"> #000000</span>
+		</p>
+		<p class"descr" id="neutral2ColorDescr"> Couleur additionnelle 2 - HSL Code : 
+			<input type="color" id="neutral2Color" value="#000000" disabled />
+			<span class"HSLcode" id="neutral2ColorHSL"> #000000</span>
+		</p>
+</div>
+
+<div class="wrapper" id="triadColorWrapper"> 
+	<h2> Schéma.de couleurs triadique</h2>
+		<p class"descr" id="triadColorDescr"> HSL Code : 
+			<input type="color" id="triadColor" value="#000000" disabled/>
+			<span class"HSLcode" id="triadColorHSL"> #000000</span>
+		</p>
+</div>
+
+
+
+
+
+
+<script src="script.js"> </script>
+</body>

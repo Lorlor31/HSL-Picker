@@ -1,0 +1,48 @@
+/* :root{
+    --mainColorValue : 1 ;
+} */
+
+h1{
+    color :rgb(211, 166, 16) ;
+}
+
+body{
+    background-color: rgb(40, 40, 87);
+    color : orange ;
+}
+
+/* CSS du colorpicker
+input[type="color" i] {
+    appearance: auto;
+    width: 50px;
+    height: 27px;
+    cursor: default;
+    box-sizing: border-box;
+    background-color: buttonface;
+    color: buttontext;
+    border-width: 1px;
+    border-style: solid;
+    border-color: buttonborder;
+    border-image: initial;
+    padding: 1px 2px;
+} */
+
+.colorDiv {
+    appearance: auto;
+    width: 50px;
+    height: 27px;
+    cursor: default;
+    box-sizing: border-box;
+    background-color: red;
+    color: green;
+    border-width: 1px;
+    border-style: solid;
+    border-color: buttonborder;
+    border-image: initial;
+    padding: 1px 2px;
+}
+
+#compColor{
+    color: hsl(56,51%,11%)
+}
+
