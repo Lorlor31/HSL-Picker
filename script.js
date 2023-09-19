@@ -1,4 +1,6 @@
 // A faire retiere les variables intuiles
+// A elucide rpourquoi redValue !=red.value malgré la déclaration de variables ???
+//redValue n'évolue pas ave lamanipulation du curseur ;()
 
 //référence aux élements input color
 const mainColor=document.getElementById("mainColor")
@@ -10,6 +12,9 @@ const neutral2Color=document.getElementById("neutral2Color")
 const triadColor=document.getElementById("triadColor")
 
 const x=document.getElementById("x")
+const red=document.getElementById("redCursor")
+const green=document.getElementById("greenCursor")
+const blue=document.getElementById("blueCursor")
 //référence aux élements span code hsl
 const mainColorHSL=document.getElementById("mainColorHSL")
 const compColorHSL=document.getElementById("compColorHSL")
@@ -24,7 +29,7 @@ const xValueDisplay=document.getElementById("xValue")
 const rValueDisplay=document.getElementById("redCursorValue")
 const gValueDisplay=document.getElementById("greenCursorValue")
 const bValueDisplay=document.getElementById("blueCursorValue")
-//tableau pour itérer pour l'affichage des valeurs des différents curseurs et màj des couleurs
+
 
 let h=0
 let s=0
@@ -42,22 +47,69 @@ let monoadd2r=0
 let monoadd2g=0
 let monoadd2b=0
 
-
+//Valeurs par défaut des couleurs et curseurs
 let mainColorValue=mainColor.value
 let xValue=x.value
+let redValue=red.value
+let blueValue=blue.value
+let greenValue=green.value
+
+//tableau pour itérer pour l'affichage des valeurs des différents curseurs et màj des couleurs
+
+const cursorsArray =    
+    {
+    "x" : {
+        "value" :xValue,
+        "inputElemt" :x ,
+        "spanElemt" :xValueDisplay 
+    },
+
+    "red" :{
+        "value" :redValue,
+        "inputElemt" :red ,
+        "spanElemt" :rValueDisplay  
+    },
+    "green" :{
+        "value" :greenValue,
+        "inputElemt" : green,
+        "spanElemt" :gValueDisplay
+    },
+    "blue" :{
+        "value" :blueValue,
+        "inputElemt" :blue ,
+        "spanElemt" :bValueDisplay  
+    }
+} 
+
 mainColor.addEventListener("input",showMainColor) 
-x.addEventListener("change",getXValue) 
+x.addEventListener("change",(event)=>getCursorValue(event,cursorsArray.x)) 
+red.addEventListener("change",(event)=>getCursorValue(event,cursorsArray.red)) 
+green.addEventListener("change",(event)=>getCursorValue(event,cursorsArray.green)) 
+blue.addEventListener("change",(event)=>getCursorValue(event,cursorsArray.blue)) 
+
 function showMainColor(event){
     mainColorValue=event.target.value
     mainColorHSL.textContent=mainColorValue
     console.log("mainColorValue",mainColorValue)
+    // redValue=mainColorValue[1]=> a faire : on recupere la valeur du rgb en heaxa, à reconvertir en décim pour màj les curseurs 
     convertRGBtoHSL()
 }
 
-function getXValue(event){
-    xValue=event.target.value 
-    xValueDisplay.textContent=xValue
-    console.log(xValue)
+function getCursorValue(event,cursor){
+    cursor.value=event.target.value // en faisant ça, on change la valeur de cursor.value, pas de xValue !!
+    cursor.inputElemt.setAttribute("value",event.target.value )
+    cursor.spanElemt.textContent=event.target.value 
+    xValue=cursorsArray.x.value
+    redValue=cursorsArray.red.value
+    greenValue=cursorsArray.green.value
+    blueValue=cursorsArray.blue.value
+    
+    
+    
+    mainColorValue="#"+decim2HexConv(redValue)+decim2HexConv(greenValue)+decim2HexConv(blueValue)
+    mainColor.setAttribute("value",mainColorValue)
+    mainColorHSL.textContent=mainColorValue
+    console.log(mainColorValue)
     convertRGBtoHSL()
 }
 
@@ -75,14 +127,14 @@ function convertRGBtoHSL(){
         s=JSON.stringify(response.hsl.s) ;
         l=JSON.stringify(response.hsl.l) ;
     })
-    .then(response=>console.log(h,s,l))
+    // .then(response=>console.log(h,s,l))
     .then((response)=> {
         mainColorHSL.textContent= "hsl(" + h + "," + s + "%,"+l+"%)"})
     // calcul de la couleur complémentaire et reconvrsion en hex pour màj de l'input "color" 
     .then(response=>{
         comph=parseInt(h)+180 ;
         compColorHSL.textContent= "hsl(" + comph + "," + s + "%,"+ l+"%)";})
-    .then(response =>{urlHsl2Rgb=urlHsl2Rgb+"("+comph+ "," + s + "%,"+ l +"%)" ; console.log(urlHsl2Rgb)})
+    .then(response =>{urlHsl2Rgb=urlHsl2Rgb+"("+comph+ "," + s + "%,"+ l +"%)" ;})
     .then(response=>fetch(urlHsl2Rgb))
     .then(response=>response.json())
     .then(response=>{
@@ -94,7 +146,7 @@ function convertRGBtoHSL(){
     .then(response=>{monoadd2l=parseInt(l) -parseInt(2*l/3); 
                     monoAdd2ColorHSL.textContent= "hsl(" + h + "," + s + "%,"+ monoadd2l+"%)";})                   
     //reconvrsion en rgb pour la couleur add1
-    .then(response =>{urlHsl2Rgb=urlHsl2Rgb+ h + "," + s + "%,"+ monoadd1l+"%)" ; console.log(urlHsl2Rgb)})
+    .then(response =>{urlHsl2Rgb=urlHsl2Rgb+ h + "," + s + "%,"+ monoadd1l+"%)" ;})
     .then(response=>fetch(urlHsl2Rgb))
     .then(response=>response.json())
     .then(response=>{
@@ -102,7 +154,7 @@ function convertRGBtoHSL(){
     })    
     .then(response=>urlHsl2Rgb="https://www.thecolorapi.com/id?hsl=")
     //reconversion en rgb pour la couleur add2
-    .then(response =>{urlHsl2Rgb=urlHsl2Rgb+ h + "," + s + "%,"+ monoadd2l+"%)" ; console.log(urlHsl2Rgb)})
+    .then(response =>{urlHsl2Rgb=urlHsl2Rgb+ h + "," + s + "%,"+ monoadd2l+"%)" ;})
     .then(response=>fetch(urlHsl2Rgb))
     .then(response=>response.json())
     .then(response=>{
@@ -115,7 +167,7 @@ function convertRGBtoHSL(){
     .then(response=>{neutral2h=parseInt(h) -parseInt(xValue); 
         neutral2ColorHSL.textContent= "hsl(" + neutral2h + "," + s + "%,"+ l+"%)";})
     //reconvrsion en rgb pour la couleur neutral1
-    .then(response =>{urlHsl2Rgb=urlHsl2Rgb+ neutral1h + "," + s + "%,"+ l+"%)" ; console.log(urlHsl2Rgb)})
+    .then(response =>{urlHsl2Rgb=urlHsl2Rgb+ neutral1h + "," + s + "%,"+ l+"%)" ; })
     .then(response=>fetch(urlHsl2Rgb))
     .then(response=>response.json())
     .then(response=>{
@@ -123,7 +175,7 @@ function convertRGBtoHSL(){
     })  
     .then(response=>urlHsl2Rgb="https://www.thecolorapi.com/id?hsl=")
     //reconvrsion en rgb pour la couleur neutral2
-    .then(response =>{urlHsl2Rgb=urlHsl2Rgb+ neutral2h + "," + s + "%,"+ l+"%)" ; console.log(urlHsl2Rgb)})
+    .then(response =>{urlHsl2Rgb=urlHsl2Rgb+ neutral2h + "," + s + "%,"+ l+"%)" ; })
     .then(response=>fetch(urlHsl2Rgb))
     .then(response=>response.json())
     .then(response=>{
@@ -134,7 +186,7 @@ function convertRGBtoHSL(){
     .then(response=>{triadColorh=parseInt(h) + parseInt(120); 
         triadColorHSL.textContent= "hsl(" + triadColorh + "," + s + "%,"+ l+"%)"})                 
     //reconvrsion en rgb pour la couleur triadique
-    .then(response =>{urlHsl2Rgb=urlHsl2Rgb+ triadColorh + "," + s + "%,"+ l+"%)" ; console.log(urlHsl2Rgb)})
+    .then(response =>{urlHsl2Rgb=urlHsl2Rgb+ triadColorh + "," + s + "%,"+ l+"%)" ;})
     .then(response=>fetch(urlHsl2Rgb))
     .then(response=>response.json())
     .then(response=>{
@@ -163,50 +215,84 @@ function convertRGBtoHSL(){
 // Repeat the steps until the quotient is equal to 0.
 
 function decim2HexConv(decAConv){
-// let decAConv=parseInt(prompt("entrez le nb à convertir"))
-let dec=decAConv
-let hex=""
-let quotientEnDecim=0
-let resteEnDecim=0
-let resteEnHex=0
-let array={
-    "0":"0" ,
-    "1":"1" ,
-    "2" :"2" ,
-    "3" :"3" ,
-    "4" : "4" ,
-    "5": "5",
-    "6": "6",
-    "7": "7",
-    "8": "8",
-    "9": "9",
-    "10": "A",
-    "11": "B",
-    "12": "C",
-    "13": "D",
-    "14": "E",
-    "15": "F" 
-}
-function divideQuotient(){
-    quotientEnDecim=Math.floor(dec/16) ;
-    resteEnDecim=dec-quotientEnDecim*16
-    resteEnHex=array[resteEnDecim.toString()]
-    hex=hex+=resteEnHex
-    dec=quotientEnDecim
-    // console.log(
-    //     "quotientEnDecim est",quotientEnDecim,
-    //     "resteEnDecim est", resteEnDecim,
-    //     "resteEnHex",resteEnHex,
-    //     "hex est",hex,
-    //     "dec",dec
-    // )
-}
-do{divideQuotient()} while(quotientEnDecim>0)
+    // let decAConv=parseInt(prompt("entrez le nb à convertir"))
+    let dec=decAConv
+    let hex=""
+    let quotientEnDecim=0
+    let resteEnDecim=0
+    let resteEnHex=0
+    let array={
+        "0":"0" ,
+        "1":"1" ,
+        "2" :"2" ,
+        "3" :"3" ,
+        "4" : "4" ,
+        "5": "5",
+        "6": "6",
+        "7": "7",
+        "8": "8",
+        "9": "9",
+        "10": "A",
+        "11": "B",
+        "12": "C",
+        "13": "D",
+        "14": "E",
+        "15": "F" 
+    }
+    function divideQuotient(){
+        quotientEnDecim=Math.floor(dec/16) ;
+        resteEnDecim=dec-quotientEnDecim*16
+        resteEnHex=array[resteEnDecim.toString()]
+        hex=hex+=resteEnHex
+        dec=quotientEnDecim
+        // console.log(
+        //     "quotientEnDecim est",quotientEnDecim,
+        //     "resteEnDecim est", resteEnDecim,
+        //     "resteEnHex",resteEnHex,
+        //     "hex est",hex,
+        //     "dec",dec
+        // )
+    }
+    do{divideQuotient()} while(quotientEnDecim>0)
 
-hex=hex.split("").reverse()
-hex=hex.join("")
-// .join(",")
-// hex=hex
+    hex=hex.split("").reverse()
+    hex=hex.join("")
+    // .join(",")
+    // hex=hex
 
-console.log("resultat de la conv en hex", hex)
+    console.log("resultat de la conv en hex", hex)
+    return hex
+}
+
+function convHex2dec(hexAConv){
+    let hex=hexAConv
+    let n=hex.length-1
+    console.log(n)
+    let dec=0
+    let array={
+        "0":"0" ,
+        "1":"1" ,
+        "2" :"2" ,
+        "3" :"3" ,
+        "4" :"4" ,
+        "5": "5",
+        "6": "6",
+        "7": "7",
+        "8": "8",
+        "9": "9",
+        "A": "10",
+        "B": "11",
+        "C": "12",
+        "D": "13",
+        "E": "14",
+        "F": "15" 
+    }
+    
+    for(let chiffre of hex){
+        chiffre=array[chiffre]
+        dec=dec+(chiffre*Math.pow(16,n))
+        n--
+        console.log(dec)
+    }
+    
 }

@@ -14,16 +14,29 @@
 
 <div class="wrapper" id="mainColorWrapper"> 
 	<h2> Choisissez la couleur principale :</h2>
-	<input type="color" id="mainColor" value="#002000"/>
+	<input type="color" id="mainColor" value="#000000"/>
 		<p class"descr" ="mainColorDescr"> Couleur princ. HSL Code : 
 			<span class="colorCode" id="mainColorHSL"> #000000</span>
 		</p>
 </div>
 
 <div class="wrapper" id="mainColorRGBWrapper">
+	<div class="cursorWrapper" id="redCursorWrapper">
 	<label for="redCursor">Red</label>
-	<input id="redCursor" class="cursor" type="range" min="0" max="255">
+	<input id="redCursor" class="cursor" type="range" min="0" max="255" value="127">
 	<span id="redCursorValue" class="cursorValue" > 127</span>
+	</div>	
+	<div class="cursorWrapper" id="greenCursorWrapper">
+		<label for="greenCursor">Green</label>
+		<input id="greenCursor" class="cursor" type="range" min="0" max="255">
+		<span id="greenCursorValue" class="cursorValue" > 127</span>
+	</div>	
+	<div class="cursorWrapper" id="blueCursorWrapper">
+		<label for="blueCursor">Blue</label>
+		<input id="blueCursor" class="cursor" type="range" min="0" max="255">
+		<span id="blueCursorValue" class="cursorValue" > 127</span>
+		</div>
+
 </div>
 
 <div class="wrapper" id="compColorWrapper"> 
