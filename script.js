@@ -48,12 +48,16 @@ let monoadd2g=0
 let monoadd2b=0
 
 //Valeurs par défaut des couleurs et curseurs
-let mainColorValue=mainColor.value
+let mainColorValue=mainColor.value//sous la forme #3valeurs hexadcimal
 let xValue=x.value
+//valeurs rgb en decimal
 let redValue=red.value
 let blueValue=blue.value
 let greenValue=green.value
-
+//valeurs rgb en hexadecimal
+let redValueHex
+let blueValueHex
+let greenValueHex
 //tableau pour itérer pour l'affichage des valeurs des différents curseurs et màj des couleurs
 
 const cursorsArray =    
@@ -91,7 +95,18 @@ function showMainColor(event){
     mainColorValue=event.target.value
     mainColorHSL.textContent=mainColorValue
     console.log("mainColorValue",mainColorValue)
-    // redValue=mainColorValue[1]=> a faire : on recupere la valeur du rgb en heaxa, à reconvertir en décim pour màj les curseurs 
+    // => a faire : on recupere la valeur du rgb en heaxa, à reconvertir en décim pour màj les curseurs 
+    // redValue=mainColorValue[1]+mainColorValue[2]
+    redValue=convHex2dec(mainColorValue[1]+mainColorValue[2])
+    red.setAttribute("value",redValue)
+    rValueDisplay.textContent=redValue
+    greenValue=convHex2dec(mainColorValue[3]+mainColorValue[4])
+    green.setAttribute("value",greenValue)
+    gValueDisplay.textContent=greenValue
+    blueValue=convHex2dec(mainColorValue[5]+mainColorValue[6])
+    blue.setAttribute("value",blueValue)
+    bValueDisplay.textContent=blueValue
+    console.log("redv",redValue,greenValue,blueValue)
     convertRGBtoHSL()
 }
 
@@ -103,13 +118,14 @@ function getCursorValue(event,cursor){
     redValue=cursorsArray.red.value
     greenValue=cursorsArray.green.value
     blueValue=cursorsArray.blue.value
-    
-    
-    
-    mainColorValue="#"+decim2HexConv(redValue)+decim2HexConv(greenValue)+decim2HexConv(blueValue)
+    redValueHex=decim2HexConv(redValue)
+    greenValueHex=decim2HexConv(greenValue)
+    blueValueHex=decim2HexConv(blueValue)
+    mainColorValue="#"+redValueHex+greenValueHex+blueValueHex
+    console.log(mainColorValue)
     mainColor.setAttribute("value",mainColorValue)
     mainColorHSL.textContent=mainColorValue
-    console.log(mainColorValue)
+    
     convertRGBtoHSL()
 }
 
@@ -260,6 +276,7 @@ function decim2HexConv(decAConv){
     // .join(",")
     // hex=hex
 
+    if(hex=="0") {hex="00"}
     console.log("resultat de la conv en hex", hex)
     return hex
 }
@@ -267,7 +284,6 @@ function decim2HexConv(decAConv){
 function convHex2dec(hexAConv){
     let hex=hexAConv
     let n=hex.length-1
-    console.log(n)
     let dec=0
     let array={
         "0":"0" ,
@@ -280,19 +296,25 @@ function convHex2dec(hexAConv){
         "7": "7",
         "8": "8",
         "9": "9",
+        "a": "10",
+        "b": "11",
+        "c": "12",
+        "d": "13",
+        "e": "14",
+        "f": "15" ,
         "A": "10",
         "B": "11",
         "C": "12",
         "D": "13",
         "E": "14",
-        "F": "15" 
+        "F": "15" ,
     }
-    
+
     for(let chiffre of hex){
         chiffre=array[chiffre]
         dec=dec+(chiffre*Math.pow(16,n))
         n--
-        console.log(dec)
+        console.log("dec est ",dec)
     }
-    
+    return dec
 }

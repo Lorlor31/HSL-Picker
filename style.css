@@ -8,7 +8,7 @@ h1{
 
 body{
     background-color: rgb(40, 40, 87);
-    color : orange ;
+    color : hsl(0,100%,47%)
 }
 
 /* CSS du colorpicker
