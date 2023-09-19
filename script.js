@@ -19,8 +19,12 @@ const neutral1ColorHSL=document.getElementById("neutral1ColorHSL")
 const neutral2ColorHSL=document.getElementById("neutral2ColorHSL")
 const triadColorHSL=document.getElementById("triadColorHSL")
 
-// référence à l'élement span pour X 
+// référence aux éléments span des 4 curseurs X, r,g , b
 const xValueDisplay=document.getElementById("xValue")
+const rValueDisplay=document.getElementById("redCursorValue")
+const gValueDisplay=document.getElementById("greenCursorValue")
+const bValueDisplay=document.getElementById("blueCursorValue")
+//tableau pour itérer pour l'affichage des valeurs des différents curseurs et màj des couleurs
 
 let h=0
 let s=0
@@ -37,6 +41,7 @@ let monoadd2l=0
 let monoadd2r=0
 let monoadd2g=0
 let monoadd2b=0
+
 
 let mainColorValue=mainColor.value
 let xValue=x.value
@@ -150,3 +155,58 @@ function convertRGBtoHSL(){
 // "r":4,"g":195,"b":4,"value":"rgb(4, 195, 4)"},
 //"hsl":{"fraction":{"h":0.33333333333333337,"s":0.9597989949748745,"l":0.3901960784313725},"h":120,"s":96,"l":39,"value":"hsl(120, 96%, 39%)"},"hsv":{"fraction":{"h":0.33333333333333337,"s":0.9794871794871796,"v":0.7647058823529411},"value":"hsv(120, 98%, 76%)","h":120,"s":98,"v":76},"name":{"value":"Green","closest_named_hex":"#00FF00","exact_match_name":false,"distance":5442},"cmyk":{"fraction":{"c":0.9794871794871796,"m":0,"y":0.9794871794871796,"k":0.23529411764705888},"value":"cmyk(98, 0, 98, 24)","c":98,"m":0,"y":98,"k":24},"XYZ":{"fraction":{"X":0.28275921568627443,"Y":0.5513850980392155,"Z":0.10636549019607841},"value":"XYZ(28, 55, 11)","X":28,"Y":55,"Z":11},"image":{"bare":"https://www.thecolorapi.com/id?format=svg&named=false&hex=04C304","named":"https://www.thecolorapi.com/id?format=svg&hex=04C304"},"contrast":{"value":"#000000"},"_links":{"self":{"href":"/id?hex=04C304"}},"_embedded":{}}
 
+//CONVERTISSEUR DECIMAL HEXADECIMAL
+// Conversion steps:
+// Divide the number by 16.
+// Get the integer quotient for the next iteration.
+// Get the remainder for the hex digit.
+// Repeat the steps until the quotient is equal to 0.
+
+function decim2HexConv(decAConv){
+// let decAConv=parseInt(prompt("entrez le nb à convertir"))
+let dec=decAConv
+let hex=""
+let quotientEnDecim=0
+let resteEnDecim=0
+let resteEnHex=0
+let array={
+    "0":"0" ,
+    "1":"1" ,
+    "2" :"2" ,
+    "3" :"3" ,
+    "4" : "4" ,
+    "5": "5",
+    "6": "6",
+    "7": "7",
+    "8": "8",
+    "9": "9",
+    "10": "A",
+    "11": "B",
+    "12": "C",
+    "13": "D",
+    "14": "E",
+    "15": "F" 
+}
+function divideQuotient(){
+    quotientEnDecim=Math.floor(dec/16) ;
+    resteEnDecim=dec-quotientEnDecim*16
+    resteEnHex=array[resteEnDecim.toString()]
+    hex=hex+=resteEnHex
+    dec=quotientEnDecim
+    // console.log(
+    //     "quotientEnDecim est",quotientEnDecim,
+    //     "resteEnDecim est", resteEnDecim,
+    //     "resteEnHex",resteEnHex,
+    //     "hex est",hex,
+    //     "dec",dec
+    // )
+}
+do{divideQuotient()} while(quotientEnDecim>0)
+
+hex=hex.split("").reverse()
+hex=hex.join("")
+// .join(",")
+// hex=hex
+
+console.log("resultat de la conv en hex", hex)
+}
