@@ -16,6 +16,7 @@ const red=document.getElementById("redCursor")
 const green=document.getElementById("greenCursor")
 const blue=document.getElementById("blueCursor")
 //référence aux élements span code hsl
+const mainColorRGB=document.getElementById("mainColorRGB")
 const mainColorHSL=document.getElementById("mainColorHSL")
 const compColorHSL=document.getElementById("compColorHSL")
 const monoAdd1ColorHSL=document.getElementById("monoAdd1ColorHSL")
@@ -93,7 +94,9 @@ blue.addEventListener("change",(event)=>getCursorValue(event,cursorsArray.blue))
 
 function showMainColor(event){
     mainColorValue=event.target.value
-    mainColorHSL.textContent=mainColorValue
+    mainColorRGB.textContent=mainColorValue
+    // attention la valeur ci dessus est en rgb hexa et pas en hsl non??il ft la cvetir sinon
+    //la laisser en rgb pour l'instant pour faciliter les calculs
     console.log("mainColorValue",mainColorValue)
     // => a faire : on recupere la valeur du rgb en heaxa, à reconvertir en décim pour màj les curseurs 
     // redValue=mainColorValue[1]+mainColorValue[2]
@@ -122,9 +125,13 @@ function getCursorValue(event,cursor){
     greenValueHex=decim2HexConv(greenValue)
     blueValueHex=decim2HexConv(blueValue)
     mainColorValue="#"+redValueHex+greenValueHex+blueValueHex
-    console.log(mainColorValue)
-    mainColor.setAttribute("value",mainColorValue)
-    mainColorHSL.textContent=mainColorValue
+    // let mainColorValueEnRgbDecim
+    console.log("maincolval", mainColorValue)
+    mainColor.value=mainColorValue 
+    // question pourquoi ici il m'a fallu changer mainCOlor.value et pas faire mainColor.setAttribute(valuemainColValue)?
+    // pour màj la couleur de l'input en fct de mainColor
+    console.log("mainColorInput", mainColor.value)
+    mainColorRGB.textContent=mainColorValue
     
     convertRGBtoHSL()
 }
@@ -145,7 +152,7 @@ function convertRGBtoHSL(){
     })
     // .then(response=>console.log(h,s,l))
     .then((response)=> {
-        mainColorHSL.textContent= "hsl(" + h + "," + s + "%,"+l+"%)"})
+        mainColorHSL.textContent= "hsl(" + h + " ," + s + "%, "+l+"%)"})
     // calcul de la couleur complémentaire et reconvrsion en hex pour màj de l'input "color" 
     .then(response=>{
         comph=parseInt(h)+180 ;
