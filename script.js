@@ -1,9 +1,10 @@
 // A faire retiere les variables intuiles
 // A elucide rpourquoi redValue !=red.value malgré la déclaration de variables ???
 //redValue n'évolue pas ave lamanipulation du curseur ;()
-
+const validButton=document.getElementById("validButton")
 //référence aux élements input color
 const mainColor=document.getElementById("mainColor")
+const mainColorTextFields=document.getElementById("mainColorTextFields")
 const compColor=document.getElementById("compColor")
 const monoAdd1Color=document.getElementById("monoAdd1Color")
 const monoAdd2Color=document.getElementById("monoAdd2Color")
@@ -85,15 +86,43 @@ const cursorsArray =
         "spanElemt" :bValueDisplay  
     }
 } 
-
+let userInput
 mainColor.addEventListener("input",showMainColor) 
+mainColorTextFields.addEventListener("input",checkUserInput) 
+validButton.addEventListener("click", function(){
+    console.log(userInput) ;
+    if (userInput.length!=7) {
+    alert("Le code doit contenir 6 caractères de 0à9 et de AàF après le #")}
+    else {mainColor.value=userInput
+        showMainColor(event)
+    }
+}) 
 x.addEventListener("change",(event)=>getCursorValue(event,cursorsArray.x)) 
 red.addEventListener("change",(event)=>getCursorValue(event,cursorsArray.red)) 
 green.addEventListener("change",(event)=>getCursorValue(event,cursorsArray.green)) 
 blue.addEventListener("change",(event)=>getCursorValue(event,cursorsArray.blue)) 
 
+function checkUserInput(event){
+    userInput=event.target.value
+    //utilier un regex pour verifier la validite du code entre
+    //rr gg bb dt etre avec chif de 0à9 ou lettres de aàf AàF
+    for (let lettre of userInput){
+    //    let regex=/[abcdef0123456789]/ig ;
+       let regex=/[a-f0-9#]/gi
+       let regexTest=regex.test(lettre)
+       if(regexTest==false) {
+        alert ("Le code couleur doit contenir des lettres de A à F et des chiffres seulement !") }
+        
+    }
+    
+    // regex.test(userInput)
+
+}
+
+
+
 function showMainColor(event){
-    mainColorValue=event.target.value
+    mainColorValue=event.target.value || userInput
     mainColorRGB.textContent=mainColorValue
     // attention la valeur ci dessus est en rgb hexa et pas en hsl non??il ft la cvetir sinon
     //la laisser en rgb pour l'instant pour faciliter les calculs
@@ -111,6 +140,7 @@ function showMainColor(event){
     bValueDisplay.textContent=blueValue
     console.log("redv",redValue,greenValue,blueValue)
     convertRGBtoHSL()
+    applyUserInputToDisplay()
 }
 
 function getCursorValue(event,cursor){
@@ -134,6 +164,7 @@ function getCursorValue(event,cursor){
     mainColorRGB.textContent=mainColorValue
     
     convertRGBtoHSL()
+    applyUserInputToDisplay()
 }
 
 
@@ -161,7 +192,8 @@ function convertRGBtoHSL(){
     .then(response=>fetch(urlHsl2Rgb))
     .then(response=>response.json())
     .then(response=>{
-        compColor.setAttribute("value",JSON.stringify(response.hex.value).replaceAll("\"","") )})
+        compColor.setAttribute("value",JSON.stringify(response.hex.value).replaceAll("\"","") )
+        r.style.setProperty('--compColor', compColor.value)})
     .then(response=>urlHsl2Rgb="https://www.thecolorapi.com/id?hsl=")
     // calcul des valeurs HSL pour le sch monochromatiques (2 couleurs additionnelles)
     .then(response=>{monoadd1l=parseInt(l) -parseInt(l/3); 
@@ -174,6 +206,7 @@ function convertRGBtoHSL(){
     .then(response=>response.json())
     .then(response=>{
         monoAdd1Color.setAttribute("value",JSON.stringify(response.hex.value).replaceAll("\"","") )
+        r.style.setProperty('--monoAdd1Color', monoAdd1Color.value)
     })    
     .then(response=>urlHsl2Rgb="https://www.thecolorapi.com/id?hsl=")
     //reconversion en rgb pour la couleur add2
@@ -182,6 +215,7 @@ function convertRGBtoHSL(){
     .then(response=>response.json())
     .then(response=>{
         monoAdd2Color.setAttribute("value",JSON.stringify(response.hex.value).replaceAll("\"","") )
+        r.style.setProperty('--monoAdd2Color', monoAdd2Color.value)
     })    
     .then(response=>urlHsl2Rgb="https://www.thecolorapi.com/id?hsl=")
     // calcul des valeurs HSL pour le sch neutre (2 couleurs additionnelles)
@@ -195,6 +229,7 @@ function convertRGBtoHSL(){
     .then(response=>response.json())
     .then(response=>{
         neutral1Color.setAttribute("value",JSON.stringify(response.hex.value).replaceAll("\"","") )
+        r.style.setProperty('--neutral1Color', neutral1Color.value)
     })  
     .then(response=>urlHsl2Rgb="https://www.thecolorapi.com/id?hsl=")
     //reconvrsion en rgb pour la couleur neutral2
@@ -203,6 +238,7 @@ function convertRGBtoHSL(){
     .then(response=>response.json())
     .then(response=>{
         neutral2Color.setAttribute("value",JSON.stringify(response.hex.value).replaceAll("\"","") )
+        r.style.setProperty('--neutral2Color', neutral2Color.value)
     }) 
     .then(response=>urlHsl2Rgb="https://www.thecolorapi.com/id?hsl=")            
     // calcul des valeurs HSL pour le sch triadique 
@@ -213,7 +249,9 @@ function convertRGBtoHSL(){
     .then(response=>fetch(urlHsl2Rgb))
     .then(response=>response.json())
     .then(response=>{
-        triadColor.setAttribute("value",JSON.stringify(response.hex.value).replaceAll("\"","") )
+        triadColor.setAttribute("value",JSON.stringify(response.hex.value).replaceAll("\"","") );
+        r.style.setProperty('--triadicColor', triadColor.value)
+        console.log("traidvalue",triadColor.value)
     })  
     .then(response=>urlHsl2Rgb="https://www.thecolorapi.com/id?hsl=")
     
@@ -325,3 +363,20 @@ function convHex2dec(hexAConv){
     }
     return dec
 }
+    let r = document.querySelector(':root');
+    let rs = getComputedStyle(r) ;
+function applyUserInputToDisplay(){
+
+    rs.getPropertyValue('--mainColor') ;
+    rs.getPropertyValue('--compColor') ;
+    rs.getPropertyValue('--monoAdd1Color') ;
+    rs.getPropertyValue('--monoAdd2Color') ;
+    rs.getPropertyValue('--neutral1Color') ;
+    rs.getPropertyValue('--neutral2Color') ;
+    rs.getPropertyValue('--triadicColor') ;
+
+
+    r.style.setProperty('--mainColor', mainColorValue)
+
+
+} ;

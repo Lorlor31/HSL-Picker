@@ -1,48 +1,70 @@
-/* :root{
-    --mainColorValue : 1 ;
-} */
-
-h1{
-    color :rgb(211, 166, 16) ;
+:root{
+    --mainColor :  rgb(40, 40, 87); 
+    --compColor : rgb(40, 40, 87); 
+    --monoAdd1Color :  rgb(40, 40, 87); 
+    --monoAdd2Color :  rgb(40, 40, 87); 
+    --neutral1Color :  rgb(40, 40, 87); 
+    --neutral2Color :  rgb(40, 40, 87); 
+    --triadicColor :  rgb(40, 40, 87); 
 }
+
 
 body{
-    background-color: rgb(40, 40, 87);
-    color : hsla(30, 100%, 50%, 0.933)
+    display : grid ;
+    grid-template-columns: repeat(2,35dvw);
+    grid-template-rows:repeat(9,auto) ;
+    grid-template-areas : 
+    "header header "
+    "mainColorInput mainColorInput"
+    "mainColorInput mainColorInput"
+    "mainColorSetRGB mainColorSetRGB"
+    "mainColorSetRGB mainColorSetRGB"
+    "compColor monoColor"
+    "compColor monoColor"
+    "neutralColor triadColor"
+    "neutralColor triadColor"
+    ;
+
+    background-color: var(--mainColor) ;
+    color :var(--neutral1Color)
 }
 
-/* CSS du colorpicker
-input[type="color" i] {
-    appearance: auto;
-    width: 50px;
-    height: 27px;
-    cursor: default;
-    box-sizing: border-box;
-    background-color: buttonface;
-    color: buttontext;
-    border-width: 1px;
-    border-style: solid;
-    border-color: buttonborder;
-    border-image: initial;
-    padding: 1px 2px;
-} */
-
-.colorDiv {
-    appearance: auto;
-    width: 50px;
-    height: 27px;
-    cursor: default;
-    box-sizing: border-box;
-    background-color: red;
-    color: green;
-    border-width: 1px;
-    border-style: solid;
-    border-color: buttonborder;
-    border-image: initial;
-    padding: 1px 2px;
+h1{
+    color :var(--triadicColor);
+    text-align: center;
+    grid-area: header ;
+    font-size: xx-large;
 }
-
+/* 
 #compColor{
     color: hsl(56,51%,11%)
+} */
+
+#mainColorInputWrapper{
+grid-area:mainColorInput ;
+}
+#mainColorRGBSetWrapper{
+    grid-area:mainColorSetRGB;
+}
+#compColorWrapper{
+    grid-area:compColor;
+}
+#monoColorWrapper{
+    grid-area:monoColor;
+}
+#neutralColorWrapper{
+
+    grid-area:neutralColor;
+}
+#triadColorWrapper{
+    grid-area:triadColor;
 }
 
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border :2px white solid ;
+    border-radius: 5px;
+}
