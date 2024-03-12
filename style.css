@@ -24,9 +24,8 @@ body{
     "neutralColor triadColor"
     "neutralColor triadColor"
     ;
-
     background-color: var(--mainColor) ;
-    color :var(--neutral1Color)
+    color :var(--mainColor)
 }
 
 h1{
