@@ -116,6 +116,7 @@ function checkUserInput(event){
     }
     
     // regex.test(userInput)
+    
 
 }
 
@@ -140,7 +141,6 @@ function showMainColor(event){
     bValueDisplay.textContent=blueValue
     console.log("redv",redValue,greenValue,blueValue)
     convertRGBtoHSL()
-    applyUserInputToDisplay()
 }
 
 function getCursorValue(event,cursor){
@@ -164,7 +164,6 @@ function getCursorValue(event,cursor){
     mainColorRGB.textContent=mainColorValue
     
     convertRGBtoHSL()
-    applyUserInputToDisplay()
 }
 
 
@@ -192,8 +191,7 @@ function convertRGBtoHSL(){
     .then(response=>fetch(urlHsl2Rgb))
     .then(response=>response.json())
     .then(response=>{
-        compColor.setAttribute("value",JSON.stringify(response.hex.value).replaceAll("\"","") )
-        r.style.setProperty('--compColor', compColor.value)})
+        compColor.setAttribute("value",JSON.stringify(response.hex.value).replaceAll("\"","") )})
     .then(response=>urlHsl2Rgb="https://www.thecolorapi.com/id?hsl=")
     // calcul des valeurs HSL pour le sch monochromatiques (2 couleurs additionnelles)
     .then(response=>{monoadd1l=parseInt(l) -parseInt(l/3); 
@@ -206,7 +204,6 @@ function convertRGBtoHSL(){
     .then(response=>response.json())
     .then(response=>{
         monoAdd1Color.setAttribute("value",JSON.stringify(response.hex.value).replaceAll("\"","") )
-        r.style.setProperty('--monoAdd1Color', monoAdd1Color.value)
     })    
     .then(response=>urlHsl2Rgb="https://www.thecolorapi.com/id?hsl=")
     //reconversion en rgb pour la couleur add2
@@ -215,7 +212,6 @@ function convertRGBtoHSL(){
     .then(response=>response.json())
     .then(response=>{
         monoAdd2Color.setAttribute("value",JSON.stringify(response.hex.value).replaceAll("\"","") )
-        r.style.setProperty('--monoAdd2Color', monoAdd2Color.value)
     })    
     .then(response=>urlHsl2Rgb="https://www.thecolorapi.com/id?hsl=")
     // calcul des valeurs HSL pour le sch neutre (2 couleurs additionnelles)
@@ -229,7 +225,6 @@ function convertRGBtoHSL(){
     .then(response=>response.json())
     .then(response=>{
         neutral1Color.setAttribute("value",JSON.stringify(response.hex.value).replaceAll("\"","") )
-        r.style.setProperty('--neutral1Color', neutral1Color.value)
     })  
     .then(response=>urlHsl2Rgb="https://www.thecolorapi.com/id?hsl=")
     //reconvrsion en rgb pour la couleur neutral2
@@ -238,7 +233,6 @@ function convertRGBtoHSL(){
     .then(response=>response.json())
     .then(response=>{
         neutral2Color.setAttribute("value",JSON.stringify(response.hex.value).replaceAll("\"","") )
-        r.style.setProperty('--neutral2Color', neutral2Color.value)
     }) 
     .then(response=>urlHsl2Rgb="https://www.thecolorapi.com/id?hsl=")            
     // calcul des valeurs HSL pour le sch triadique 
@@ -249,9 +243,7 @@ function convertRGBtoHSL(){
     .then(response=>fetch(urlHsl2Rgb))
     .then(response=>response.json())
     .then(response=>{
-        triadColor.setAttribute("value",JSON.stringify(response.hex.value).replaceAll("\"","") );
-        r.style.setProperty('--triadicColor', triadColor.value)
-        console.log("traidvalue",triadColor.value)
+        triadColor.setAttribute("value",JSON.stringify(response.hex.value).replaceAll("\"","") )
     })  
     .then(response=>urlHsl2Rgb="https://www.thecolorapi.com/id?hsl=")
     
@@ -306,13 +298,6 @@ function decim2HexConv(decAConv){
         resteEnHex=array[resteEnDecim.toString()]
         hex=hex+=resteEnHex
         dec=quotientEnDecim
-        // console.log(
-        //     "quotientEnDecim est",quotientEnDecim,
-        //     "resteEnDecim est", resteEnDecim,
-        //     "resteEnHex",resteEnHex,
-        //     "hex est",hex,
-        //     "dec",dec
-        // )
     }
     do{divideQuotient()} while(quotientEnDecim>0)
 
@@ -363,20 +348,3 @@ function convHex2dec(hexAConv){
     }
     return dec
 }
-    let r = document.querySelector(':root');
-    let rs = getComputedStyle(r) ;
-function applyUserInputToDisplay(){
-
-    rs.getPropertyValue('--mainColor') ;
-    rs.getPropertyValue('--compColor') ;
-    rs.getPropertyValue('--monoAdd1Color') ;
-    rs.getPropertyValue('--monoAdd2Color') ;
-    rs.getPropertyValue('--neutral1Color') ;
-    rs.getPropertyValue('--neutral2Color') ;
-    rs.getPropertyValue('--triadicColor') ;
-
-
-    r.style.setProperty('--mainColor', mainColorValue)
-
-
-} ;
